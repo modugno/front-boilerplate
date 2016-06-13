@@ -8,7 +8,6 @@ var gulp        = require('gulp'),
     minifycss   = require('gulp-minify-css'),
     uglify      = require('gulp-uglify'),
     concat      = require('gulp-concat');
-    // imagemin    = require('gulp-imagemin');
 
 // browser-sync
 gulp.task('browser-sync', function() {
@@ -31,20 +30,23 @@ gulp.task('style', function() {
 
 // javascript
 gulp.task('js', function(){
-	return gulp.src('_assets/_js/**/*.js')
+	return gulp.src('./_assets/_js/**/*.js')
 		.pipe(plumber())
 		.pipe(concat('main.js'))
 		.pipe(uglify())
-		.pipe(gulp.dest('assets/js/'));
+		.pipe(gulp.dest('./assets/js/'));
+});
+
+// watch files
+gulp.task('watch', function() {
+	gulp.watch('./_assets/_css/**/*.scss', ['style']);
+	gulp.watch('./_assets/_js/**/*.js', ['js']);
+	gulp.watch('./*.html').on('change', browserSync.reload);
 });
 
 // images
-// gulp.task('imagemin', function() {
-// 	return gulp.src('assets/_img/**/*.{jpg,png,gif}')
-// 		.pipe(plumber())
-// 		.pipe(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }))
-// 		.pipe(gulp.dest('assets/img/'));
-// });
 
 
-gulp.task('default', ['js', 'style', 'browser-sync']);
+
+// exec default
+gulp.task('default', ['js', 'style', 'browser-sync', 'watch']);
